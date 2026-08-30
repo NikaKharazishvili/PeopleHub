@@ -19,7 +19,6 @@ public class InterestService : IInterestService
     public async Task<List<InterestDto>> GetAllAsync()
     {
         logger.LogInformation("Fetching all interests");
-        var interests = await context.Interests.AsNoTracking().OrderBy(i => i.Id).ToListAsync();
-        return interests.Select(i => i.ToInterestDto()).ToList();
+        return await context.Interests.AsNoTracking().OrderBy(i => i.Id).Select(i => i.ToInterestDto()).ToListAsync();
     }
 }
