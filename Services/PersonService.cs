@@ -24,7 +24,7 @@ public class PersonService : IPersonService
         if (pageSize < 1) pageSize = 5;
 
         logger.LogInformation($"Fetching persons - page: {page}, page size: {pageSize}");
-        var query = context.Persons.Include(p => p.Interests).Include(p => p.Quotes).OrderBy(p => p.Id).AsNoTracking();
+        var query = context.Persons.Include(p => p.Quotes).Include(p => p.Interests).OrderBy(p => p.Id).AsNoTracking();
         var totalCount = await query.CountAsync();
         var persons = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
@@ -52,11 +52,7 @@ public class PersonService : IPersonService
         var person = dto.ToPerson();
         person.UserId = userId;
 
-        if (dto.InterestIds.Any())
-        {
-            var interests = await context.Interests.Where(i => dto.InterestIds.Contains(i.Id)).ToListAsync();
-            person.Interests = interests;
-        }
+        if (dto.InterestIds.Any()) person.Interests = await context.Interests.Where(i => dto.InterestIds.Contains(i.Id)).ToListAsync();
 
         await context.Persons.AddAsync(person);
         await context.SaveChangesAsync();
