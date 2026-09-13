@@ -12,9 +12,9 @@ var builder = WebApplication.CreateBuilder(args); // Sets up the app: config, DI
 builder.Services.AddEndpointsApiExplorer(); // Discovers our API endpoints so Swagger can document them
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); // Registers our DB context, tells EF Core to use SQL Server with our connection string
 builder.Services.AddControllers(); // Enables controller support (routes HTTP requests to Controller classes)
-builder.Services.AddScoped<IPersonService, PersonService>(); // Registers Service in DI — whenever the interface is requested, provide the implementation instance (new one per request)
-builder.Services.AddScoped<ITokenService, TokenService>(); // Registers Service in DI
-builder.Services.AddScoped<IInterestService, InterestService>(); // Registers Service in DI
+builder.Services.AddScoped<IPersonService, PersonService>(); // Registers Service in DI
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IInterestService, InterestService>();
 // Generates the OpenAPI/Swagger JSON doc, configured with JWT Bearer support for the Authorize button
 builder.Services.AddSwaggerGen(options =>
 {
